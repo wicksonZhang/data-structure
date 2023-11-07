@@ -41,6 +41,8 @@ public class LinkedList<E> extends AbstractList<E> {
      */
     @Override
     public void add(int index, E element) {
+        rangeAddChecked(index);
+
         if (index == 0) {
             first = new Node<>(element, null);
         } else {
@@ -59,6 +61,7 @@ public class LinkedList<E> extends AbstractList<E> {
      */
     @Override
     public E remove(int index) {
+        rangeChecked(index);
         Node<E> node = node(index);
         if (index == 0) {
             first = first.next;
@@ -70,9 +73,52 @@ public class LinkedList<E> extends AbstractList<E> {
         return node.element;
     }
 
+    /**
+     * 获取元素索引
+     *
+     * @param element 元素
+     * @return
+     */
     @Override
     public int indexOf(E element) {
-        return 0;
+        Node<E> node = first;
+        if (element == null) {
+            for (int i = 0; i < size; i++) {
+                if (null == node.element) {
+                    return i;
+                }
+                node = node.next;
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                if (element.equals(node.element)) {
+                    return i;
+                }
+                node = node.next;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * 打印元素
+     *
+     * @return
+     */
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("{ size = ").append(size).append(" , Node = [ ");
+        Node<E> node = first;
+        for (int i = 0; i < size; i++) {
+            if (i != 0) {
+                builder.append(",");
+            }
+            builder.append(node.element);
+            node = node.next;
+        }
+        builder.append(" ]}");
+        return builder.toString();
     }
 
     /**
