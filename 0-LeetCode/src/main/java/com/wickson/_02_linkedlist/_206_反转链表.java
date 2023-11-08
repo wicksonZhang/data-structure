@@ -8,14 +8,14 @@ public class _206_反转链表 {
     public static void main(String[] args) {
         ListNode head = new ListNode(1);
         head.next = new ListNode(2);
-        head.next.next = new ListNode(3);
-        head.next.next.next = new ListNode(4);
-        head.next.next.next.next = new ListNode(5);
+//        head.next.next = new ListNode(3);
+//        head.next.next.next = new ListNode(4);
+//        head.next.next.next.next = new ListNode(5);
 
         System.out.println("Original Linked List:");
         printLinkedList(head);
 
-        ListNode reversedHead = reverseList(head);
+        ListNode reversedHead = reverseList2(head);
 
         System.out.println("Reversed Linked List:");
         printLinkedList(reversedHead);
@@ -30,7 +30,7 @@ public class _206_反转链表 {
      * @param head 头节点
      * @return
      */
-    public static ListNode reverseList(ListNode head) {
+    public static ListNode reverseList1(ListNode head) {
         // 递归反分为两部分：第一部分找到程序出口，第二部分处理核心逻辑
         // ================================= 寻找出口 =================================
         // 1. 为什么 reverseList(head) 是从 head.next 开始，而不是从 head 开始？
@@ -42,7 +42,8 @@ public class _206_反转链表 {
         if (head == null || head.next == null) {
             return head;
         }
-        ListNode listNode = reverseList(head.next);
+        System.out.println("head = " + head);
+        ListNode listNode = reverseList1(head.next);
         // ================================= 逻辑处理 =================================
         // 1. listNode 返回的又是谁？head 最后指向的是谁？
         // >  listNode -> ListNode{val=5, next=null};
@@ -53,21 +54,19 @@ public class _206_反转链表 {
         return listNode;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public static ListNode reverseList2(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode tempNode = null;
+        while (head != null) {
+            ListNode nextNode = head.next;
+            head.next = tempNode;
+            tempNode = head;
+            head = nextNode;
+        }
+        return tempNode;
+    }
 
 
 //    public static ListNode reverseList(ListNode head) {
