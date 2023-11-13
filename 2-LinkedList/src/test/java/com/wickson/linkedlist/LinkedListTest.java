@@ -1,18 +1,19 @@
 package com.wickson.linkedlist;
 
+import com.wickson.linkedlist.single.SingleLinkedList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class LinkedListTest {
+public class SingleLinkedListTest {
 
-    private LinkedList<String> list;
+    private SingleLinkedList<String> list;
 
     @Before
     public void setUp() {
-        list = new LinkedList<>();
+        list = new SingleLinkedList<>();
     }
 
     @Test

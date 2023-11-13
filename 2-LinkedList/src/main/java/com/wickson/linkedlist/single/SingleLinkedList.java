@@ -1,9 +1,11 @@
-package com.wickson.linkedlist;
+package com.wickson.linkedlist.single;
+
+import com.wickson.linkedlist.AbstractList;
 
 /**
  * 链表
  */
-public class LinkedList<E> extends AbstractList<E> {
+public class SingleLinkedList<E> extends AbstractList<E> {
 
     private Node<E> first;
 

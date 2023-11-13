@@ -1,10 +1,12 @@
-package com.wickson.linkedlist;
+package com.wickson.linkedlist.single;
 
+
+import com.wickson.linkedlist.AbstractList;
 
 /**
  * 动态数组
  */
-public class ArrayList<E> extends AbstractList<E> {
+public class SingleArrayList<E> extends AbstractList<E> {
 
     // 动态数组的大小
     private int size;
@@ -18,7 +20,7 @@ public class ArrayList<E> extends AbstractList<E> {
     /**
      * 默认初始容量为10
      */
-    public ArrayList() {
+    public SingleArrayList() {
         this(DEFAULT_CAPACITY);
     }
 
@@ -28,7 +30,7 @@ public class ArrayList<E> extends AbstractList<E> {
      * @param initialCapacity 初始容量
      */
     @SuppressWarnings("unchecked")
-    public ArrayList(int initialCapacity) {
+    public SingleArrayList(int initialCapacity) {
         if (initialCapacity < 0) {
             throw new IllegalArgumentException("Illegal Capacity: " + initialCapacity);
         } else if (initialCapacity == 0) {
@@ -165,7 +167,7 @@ public class ArrayList<E> extends AbstractList<E> {
      */
     public String printf() {
         StringBuilder builder = new StringBuilder();
-        builder.append("ArrayList{ size = ")
+        builder.append("SingleArrayList{ size = ")
                 .append(size)
                 .append(" , elements = [ ");
         for (int i = 0; i < size; i++) {
