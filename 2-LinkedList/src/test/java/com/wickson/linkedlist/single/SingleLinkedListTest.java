@@ -1,6 +1,5 @@
-package com.wickson.linkedlist;
+package com.wickson.linkedlist.single;
 
-import com.wickson.linkedlist.single.SingleLinkedList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
