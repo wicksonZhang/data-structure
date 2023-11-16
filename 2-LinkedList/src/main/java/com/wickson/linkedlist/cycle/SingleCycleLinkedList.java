@@ -1,7 +1,6 @@
 package com.wickson.linkedlist.cycle;
 
 import com.wickson.linkedlist.AbstractList;
-import com.wickson.linkedlist.single.SingleLinkedList;
 
 /**
  * 单向循环链表
@@ -33,14 +32,16 @@ public class SingleCycleLinkedList<E> extends AbstractList<E> {
     public void add(int index, E element) {
         rangeAddChecked(index);
 
-        if (index == 0) {
+        if (index == 0) { // 在首节点添加元素
             Node<E> node = new Node<>(element, first);
-            // 如果是第一个节点，就让他自己指向自己。
-            // 如果不是第一个节点，就让最后一个节点指向第一个节点
-            Node<E> last = size == 0 ? node : node(size - 1);
-            node.next = node;
-            last.next = node;
-        } else {
+            first = node;
+            if (size == 0) { // 当只有一个元素的情况
+                node.next = node;
+            } else {
+                Node<E> lastNode = node(size - 1);
+                lastNode.next = node;
+            }
+        } else { // 非首节点添加元素
             Node<E> prevNode = node(index - 1);
             prevNode.next = new Node<>(element, prevNode.next);
         }
@@ -55,22 +56,24 @@ public class SingleCycleLinkedList<E> extends AbstractList<E> {
      */
     public E remove(int index) {
         rangeChecked(index);
-
         Node<E> node = first;
-        //删除头节点
         if (index == 0) {
-            // 只有一个节点
             if (size == 1) {
+                // case3: 当只有一个节点元素
                 first = null;
             } else {
-                Node<E> last = node(size - 1);
-                first = first.next;
-                last.next = first;
+                // case2: 删除首节点元素
+                first = node.next;
+                Node<E> lastNode = node(size - 1);
+                lastNode.next = first;
             }
         } else {
-            Node<E> prev = node(index - 1);
-            node = prev.next;
-            prev.next = node.next;
+            // case1：往中间或者最后一个位置删除元素元素
+            Node<E> prevNode = node(index - 1);
+            Node<E> removeNode = prevNode.next;
+            prevNode.next = removeNode.next;
+            size--;
+            return removeNode.element;
         }
         size--;
         return node.element;

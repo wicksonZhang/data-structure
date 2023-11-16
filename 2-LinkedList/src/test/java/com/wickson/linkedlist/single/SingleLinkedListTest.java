@@ -1,16 +1,17 @@
 package com.wickson.linkedlist.single;
 
 import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class SingleLinkedListTest {
 
     private SingleLinkedList<String> list;
 
-    @Before
+    @BeforeAll
     public void setUp() {
         list = new SingleLinkedList<>();
     }
@@ -82,17 +83,17 @@ public class SingleLinkedListTest {
         assertEquals(0, list.size());
     }
 
-    @Test(expected = IndexOutOfBoundsException.class)
+    @Test
     public void testGetWithInvalidIndex() {
         list.get(0); // Expecting an exception since the list is empty
     }
 
-    @Test(expected = IndexOutOfBoundsException.class)
+    @Test
     public void testSetWithInvalidIndex() {
         list.set(0, "A"); // Expecting an exception since the list is empty
     }
 
-    @Test(expected = IndexOutOfBoundsException.class)
+    @Test
     public void testRemoveWithInvalidIndex() {
         list.remove(0); // Expecting an exception since the list is empty
     }

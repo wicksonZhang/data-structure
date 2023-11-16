@@ -1,9 +1,9 @@
 package com.wickson.linkedlist.doubles;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class LinkedListTest {
@@ -15,9 +15,9 @@ public class LinkedListTest {
         linkedList.add(1, 2);
         linkedList.add(2, 3);
 
-        assertEquals((Object) 1, linkedList.get(0));
-        assertEquals((Object) 2, linkedList.get(1));
-        assertEquals((Object) 3, linkedList.get(2));
+        assertEquals(1, linkedList.get(0));
+        assertEquals(2, linkedList.get(1));
+        assertEquals(3, linkedList.get(2));
         System.out.println("linkedList ===> " + linkedList);
     }
 
