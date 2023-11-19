@@ -12,6 +12,7 @@
         <module>0-LeetCode</module>
         <module>1-ArrayList</module>
         <module>2-LinkedList</module>
+        <module>3-stack</module>
     </modules>
 
     <properties>
