@@ -5,9 +5,6 @@ package com.wickson.stack.list;
  */
 public class ArrayList<E> extends AbstractList<E> {
 
-    // 动态数组的大小
-    private int size;
-
     // 数组容量
     private E[] elements;
 

@@ -1,6 +1,6 @@
 package com.wickson.linkedlist.single;
 
-import org.junit.After;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -98,7 +98,7 @@ public class SingleLinkedListTest {
         list.remove(0); // Expecting an exception since the list is empty
     }
 
-    @After
+    @AfterAll
     public void printf() {
         System.out.println("toString() = " + list.toString());
     }

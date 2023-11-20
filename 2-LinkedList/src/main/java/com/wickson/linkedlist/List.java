@@ -2,12 +2,6 @@ package com.wickson.linkedlist;
 
 public interface List<E> {
 
-    // 动态数组的大小
-    int size = 0;
-
-    // 默认数组元素
-    int[] element = new int[0];
-
     // 元素数量
     int size();
 

@@ -5,9 +5,6 @@ package com.wickson.arraylist;
  */
 public interface List<E> {
 
-    // 默认数组元素
-    int[] element = new int[0];
-
     // 元素数量
     int size();
 

@@ -8,9 +8,6 @@ import com.wickson.linkedlist.AbstractList;
  */
 public class SingleArrayList<E> extends AbstractList<E> {
 
-    // 动态数组的大小
-    private int size;
-
     // 数组容量
     private E[] elements;
 
