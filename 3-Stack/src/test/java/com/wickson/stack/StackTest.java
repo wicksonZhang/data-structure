@@ -1,5 +1,6 @@
 package com.wickson.stack;
 
+import com.wickson.stack.Stack;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
