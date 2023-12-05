@@ -1,4 +1,4 @@
-package com.wickson.queue.list;
+package com.wickson.bst.list;
 
 /**
  * 双向链表

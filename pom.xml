@@ -14,6 +14,7 @@
         <module>2-LinkedList</module>
         <module>3-Stack</module>
         <module>4-Queue</module>
+        <module>6-BST</module>
     </modules>
 
     <properties>

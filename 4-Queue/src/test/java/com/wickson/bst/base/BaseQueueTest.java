@@ -1,4 +1,4 @@
-package com.wickson.queue.base;
+package com.wickson.bst.base;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

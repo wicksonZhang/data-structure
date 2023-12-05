@@ -1,4 +1,4 @@
-package com.wickson.queue.deque;
+package com.wickson.bst.deque;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

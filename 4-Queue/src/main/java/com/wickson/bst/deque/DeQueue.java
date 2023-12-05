@@ -1,7 +1,7 @@
-package com.wickson.queue.deque;
+package com.wickson.bst.deque;
 
-import com.wickson.queue.list.LinkedList;
-import com.wickson.queue.list.List;
+import com.wickson.bst.list.LinkedList;
+import com.wickson.bst.list.List;
 
 /**
  * 双端队列

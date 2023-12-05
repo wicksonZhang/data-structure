@@ -1,4 +1,4 @@
-package com.wickson.queue.circle;
+package com.wickson.bst.circle;
 
 /**
  * 循环队列

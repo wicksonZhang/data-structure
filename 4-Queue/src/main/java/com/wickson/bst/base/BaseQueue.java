@@ -1,7 +1,7 @@
-package com.wickson.queue.base;
+package com.wickson.bst.base;
 
-import com.wickson.queue.list.LinkedList;
-import com.wickson.queue.list.List;
+import com.wickson.bst.list.LinkedList;
+import com.wickson.bst.list.List;
 
 /**
  * 普通队列

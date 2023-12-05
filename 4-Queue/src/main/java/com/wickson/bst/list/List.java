@@ -1,4 +1,4 @@
-package com.wickson.queue.list;
+package com.wickson.bst.list;
 
 public interface List<E> {
 
