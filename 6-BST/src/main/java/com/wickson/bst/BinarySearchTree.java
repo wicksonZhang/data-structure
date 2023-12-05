@@ -8,26 +8,31 @@ package com.wickson.bst;
  */
 public class BinarySearchTree<E> {
 
+    private int size;
+
+
     /**
      * 元素的数量
      *
-     * @return
+     * @return int
      */
     public int size() {
-        return 0;
+        return size;
     }
 
     /**
      * 数组是否为空
-     * @return
+     *
+     * @return boolean
      */
     public boolean isEmpty() {
-        return false;
+        return size == 0;
     }
 
     /**
      * 添加元素
-     * @param element
+     *
+     * @param element 元素
      */
     public void add(E element) {
 
@@ -35,7 +40,8 @@ public class BinarySearchTree<E> {
 
     /**
      * 删除指定位置元素
-     * @param element
+     *
+     * @param element 元素
      */
     public void remove(E element) {
 
@@ -48,7 +54,12 @@ public class BinarySearchTree<E> {
 
     }
 
-    // 是否包含某个元素
+    /**
+     * 是否包含某个元素
+     *
+     * @param element 元素
+     * @return
+     */
     public boolean contains(E element) {
         return false;
     }
