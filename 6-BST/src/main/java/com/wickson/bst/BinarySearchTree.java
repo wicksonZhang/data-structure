@@ -1,6 +1,8 @@
 package com.wickson.bst;
 
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * 二叉搜索树
@@ -182,6 +184,32 @@ public class BinarySearchTree<E> {
         postOrderTraversal(node.leftNode);
         postOrderTraversal(node.rightNode);
         System.out.println("node.element = " + node.element);
+    }
+
+    /**
+     * 层序遍历：从上倒下，从左到右
+     */
+    public void levelOrderTraversal() {
+        levelOrderTraversal(root);
+    }
+
+    private void levelOrderTraversal(Node<E> node) {
+        if (node == null) {
+            return;
+        }
+        Queue<Node<E>> queue = new LinkedList<>();
+        // 将根节点进行入队
+        queue.offer(node);
+        while (!queue.isEmpty()) {
+            Node<E> newNode = queue.poll();
+            System.out.print("newNode = " + newNode.element);
+            if (node.leftNode != null) {
+                queue.offer(node.leftNode);
+            }
+            if (node.rightNode != null) {
+                queue.offer(node.rightNode);
+            }
+        }
     }
 
     // ========================================== 二叉搜索树 - 遍历 ==========================================
