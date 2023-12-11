@@ -214,6 +214,29 @@ public class BinarySearchTree<E> {
 
     // ========================================== 二叉搜索树 - 遍历 ==========================================
 
+    /**
+     * 前驱节点
+     *
+     * @param node 节点
+     */
+    public Node<E> predecessor(Node<E> node) {
+        if (node == null) {
+            return null;
+        }
+        Node<E> node1 = root.leftNode;
+        if (node1 != null) {
+            while (node1.rightNode != null) {
+                node1 = node1.rightNode;
+            }
+            return node1;
+        }
+
+        while (node.parentNode != null &&  node == node.parentNode.leftNode) {
+            node = node.parentNode;
+        }
+
+        return node.parentNode;
+    }
 
     /**
      * 删除指定位置元素
