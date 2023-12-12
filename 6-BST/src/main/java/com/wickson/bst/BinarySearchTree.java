@@ -16,13 +16,13 @@ public class BinarySearchTree<E> {
 
     private Node<E> root;
 
-    private final Comparator<E> comparator;
+    private final Comparator<? super E> comparator;
 
     public BinarySearchTree() {
         this(null);
     }
 
-    public BinarySearchTree(Comparator<E> comparator) {
+    public BinarySearchTree(Comparator<? super E> comparator) {
         this.comparator = comparator;
     }
 
@@ -315,7 +315,9 @@ public class BinarySearchTree<E> {
         if (removeNode != null) {
             // 更换父级节点
             removeNode.parentNode = node.parentNode;
-            if (node == node.parentNode.leftNode) {
+            if (removeNode.parentNode == null) { // 当只存在根节点，根节点的度为1的情况
+                root = removeNode;
+            } else if (node == node.parentNode.leftNode) {
                 node.parentNode.leftNode = removeNode;
             } else {
                 node.parentNode.rightNode = removeNode;
@@ -357,7 +359,8 @@ public class BinarySearchTree<E> {
      * 清除所有元素
      */
     public void clear() {
-
+        root = null;
+        size = 0;
     }
 
     /**
