@@ -44,6 +44,10 @@ public class BinarySearchTree<E> {
             this.element = element;
             this.parentNode = parentNode;
         }
+
+        public boolean hasTwoChildren() {
+            return leftNode != null && rightNode != null;
+        }
     }
 
     /**
@@ -214,6 +218,9 @@ public class BinarySearchTree<E> {
 
     // ========================================== 二叉搜索树 - 遍历 ==========================================
 
+
+    // ========================================== 二叉搜索树 - 前驱和后继 ==========================================
+
     /**
      * 前驱节点
      *
@@ -223,20 +230,54 @@ public class BinarySearchTree<E> {
         if (node == null) {
             return null;
         }
-        Node<E> node1 = root.leftNode;
-        if (node1 != null) {
+        // 检查左子树的右节点
+        if (root.leftNode != null) {
+            Node<E> node1 = root.leftNode;
             while (node1.rightNode != null) {
                 node1 = node1.rightNode;
             }
             return node1;
         }
-
-        while (node.parentNode != null &&  node == node.parentNode.leftNode) {
-            node = node.parentNode;
+        // 处理无左子树的情况
+        Node<E> parentNode = node.parentNode;
+        while (parentNode != null && node == parentNode.leftNode) {
+            node = parentNode;
+            parentNode = parentNode.parentNode;
         }
 
-        return node.parentNode;
+        return parentNode;
     }
+
+    /**
+     * 后继节点
+     *
+     * @param node 元素
+     * @return Node<E>
+     */
+    public Node<E> successor(Node<E> node) {
+        if (node == null) {
+            return null;
+        }
+
+        // 处理存在右子树的情况
+        if (root.rightNode != null) {
+            Node<E> rightNode = root.rightNode;
+            while (rightNode.leftNode != null) {
+                rightNode = rightNode.leftNode;
+            }
+            return rightNode;
+        }
+
+        // 处理不存在右子树的情况
+        Node<E> parentNode = node.parentNode;
+        while (parentNode != null && node == parentNode.rightNode) {
+            node = parentNode;
+            parentNode = parentNode.parentNode;
+        }
+        return parentNode;
+    }
+
+    // ========================================== 二叉搜索树 - 前驱和后继 ==========================================
 
     /**
      * 删除指定位置元素
@@ -244,7 +285,72 @@ public class BinarySearchTree<E> {
      * @param element 元素
      */
     public void remove(E element) {
+        checkedElementNotNull(element);
 
+        Node<E> node = node(element);
+        remove(node);
+    }
+
+    /**
+     * 删除元素
+     *
+     * @param node 节点
+     */
+    private void remove(Node<E> node) {
+        if (node == null) {
+            return;
+        }
+        // 删除度为 2 的节点
+        if (node.hasTwoChildren()) {
+            // 找到当前元素的前驱节点
+            Node<E> predecessorNode = predecessor(node);
+            node.element = predecessorNode.element;
+            node = predecessorNode;
+        }
+
+        // 删除 node：node节点的度要么是1，要么是0
+        Node<E> removeNode = node.leftNode != null ? node.leftNode : node.rightNode;
+
+        // 如果 node 是为删除度为1的节点
+        if (removeNode != null) {
+            // 更换父级节点
+            removeNode.parentNode = node.parentNode;
+            if (node == node.parentNode.leftNode) {
+                node.parentNode.leftNode = removeNode;
+            } else {
+                node.parentNode.rightNode = removeNode;
+            }
+        } else if (node.parentNode == null) { // 删除叶子节点, 且只有根节点元素
+            root = null;
+        } else { // 删除叶子节点, 有可能当前节点在父级节点的左边，也有可能在父级节点的右边
+            if (node == node.parentNode.leftNode) {
+                node.parentNode.leftNode = null;
+            } else {
+                node.parentNode.rightNode = null;
+            }
+        }
+        size--;
+    }
+
+    /**
+     * 获取元素的节点
+     *
+     * @param element 元素
+     * @return E
+     */
+    private Node<E> node(E element) {
+        Node<E> node = this.root;
+        while (node != null) {
+            int cmp = compare(element, node.element);
+            if (cmp > 0) {
+                node = node.rightNode;
+            } else if (cmp < 0) {
+                node = node.leftNode;
+            } else {
+                return node;
+            }
+        }
+        return null;
     }
 
     /**
@@ -258,10 +364,10 @@ public class BinarySearchTree<E> {
      * 是否包含某个元素
      *
      * @param element 元素
-     * @return
+     * @return boolean
      */
     public boolean contains(E element) {
-        return false;
+        return node(element) != null;
     }
 
 }
