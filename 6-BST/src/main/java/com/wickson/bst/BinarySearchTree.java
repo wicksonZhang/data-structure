@@ -45,6 +45,20 @@ public class BinarySearchTree<E> {
             this.parentNode = parentNode;
         }
 
+        /**
+         * 是否存在叶子节点
+         *
+         * @return boolean
+         */
+        public boolean isLeaf() {
+            return leftNode == null && rightNode == null;
+        }
+
+        /**
+         * 是否该节点的度为2
+         *
+         * @return boolean
+         */
         public boolean hasTwoChildren() {
             return leftNode != null && rightNode != null;
         }
@@ -278,6 +292,27 @@ public class BinarySearchTree<E> {
     }
 
     // ========================================== 二叉搜索树 - 前驱和后继 ==========================================
+
+    // ========================================== 二叉搜索树 - 高度 ==========================================
+
+    /**
+     * 二叉树的高度
+     *
+     * @return int
+     */
+    public int height() {
+        return height(root);
+    }
+
+    private int height(Node<E> node) {
+        if (node == null) {
+            return 0;
+        }
+        return 1 + Math.max(height(node.leftNode), height(node.rightNode));
+    }
+
+
+    // ========================================== 二叉搜索树 - 高度 ==========================================
 
     /**
      * 删除指定位置元素
