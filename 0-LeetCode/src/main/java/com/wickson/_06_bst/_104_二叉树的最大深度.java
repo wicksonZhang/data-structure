@@ -5,25 +5,6 @@ package com.wickson._06_bst;
  */
 public class _104_二叉树的最大深度 {
 
-    public static class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-
-        TreeNode() {
-        }
-
-        TreeNode(int val) {
-            this.val = val;
-        }
-
-        TreeNode(int val, TreeNode left, TreeNode right) {
-            this.val = val;
-            this.left = left;
-            this.right = right;
-        }
-    }
-
     public int maxDepth(TreeNode root) {
         if (root == null) {
             return 0;

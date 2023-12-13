@@ -304,13 +304,52 @@ public class BinarySearchTree<E> {
         return height(root);
     }
 
+    /**
+     * 递归方式
+     *
+     * @param node 节点
+     * @return
+     */
+//    private int height(Node<E> node) {
+//        if (node == null) {
+//            return 0;
+//        }
+//        return 1 + Math.max(height(node.leftNode), height(node.rightNode));
+//    }
+
+    /**
+     * 非递归
+     *
+     * @param node 节点
+     * @return int
+     */
     private int height(Node<E> node) {
         if (node == null) {
             return 0;
         }
-        return 1 + Math.max(height(node.leftNode), height(node.rightNode));
+        // 树的高度
+        int height = 0;
+        // 当前层的数量
+        int levelSize = 1;
+        Queue<Node<E>> queue = new LinkedList<>();
+        queue.offer(node);
+        while (!queue.isEmpty()) {
+            Node<E> poll = queue.poll();
+            levelSize--;
+            if (poll.leftNode != null) {
+                queue.offer(poll.leftNode);
+            }
+            if (poll.rightNode != null) {
+                queue.offer(poll.rightNode);
+            }
+            // 当层数等于0时，表示该层访问完了
+            if (levelSize == 0) {
+                levelSize = queue.size();
+                height++;
+            }
+        }
+        return height;
     }
-
 
     // ========================================== 二叉搜索树 - 高度 ==========================================
 
