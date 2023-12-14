@@ -15,6 +15,7 @@
         <module>3-Stack</module>
         <module>4-Queue</module>
         <module>6-BST</module>
+        <module>7-AVL</module>
     </modules>
 
     <properties>
