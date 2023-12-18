@@ -129,7 +129,17 @@
 
 #### `RL` - LL 右旋转，RR左旋转（双旋）
 
+* 当节点 p 是 节点 g 的 right 节点，节点 n 是 节点 p 的 left 节点，现在往 节点 n 添加节点，这种情况称为 `RL`。
 
+  <img src="https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312182031987.png" alt="image-20231218203110939" style="zoom:100%;float:left" />
+
+* 如果是 `RL`，我们先进行一次右旋转，将二叉树变为 `RR`
+
+  <img src="https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312182032685.png" alt="image-20231218203234640" style="zoom:70%;float:left" />
+
+* 然后再进行左旋转，即可达到平衡
+
+  <img src="https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312182033799.png" alt="image-20231218203315778" style="zoom:80%;float:left" />
 
 
 
