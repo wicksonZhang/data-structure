@@ -47,5 +47,111 @@
 
 
 
+## 二叉树失衡的情况
+
+### 添加导致的失衡
+
+* 如下图中，当添加 13 这个节点时，会导致所有的祖先节点进行失衡。
+
+  <img src="https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312181518602.png" alt="image-20231218151818560" style="zoom: 50%; float: left;" />
+
+
+
+### 添加导致的失衡的解决方案
+
+#### LL - 右旋转（单旋）
+
+* 如下图中，其中 `n` 代表 `node` ，`p` 代表 `parent` ，`g` 代表 `grandparent`。
+
+  <img src="https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312181533299.png" alt="image-20231218153324262" style="zoom:80%;float:left;" />
+
+* 现在需要在节点 `n` 的左子树 `T0` 中添加元素，则会导致节点 `g` 失衡。
+
+  <img src="https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312181536841.png" alt="image-20231218153600806" style="zoom:77%;float:left" />
+
+* 当节点 `g` 左边的左边节点失去平衡时，我们称这种情况为 `LL`。针对这种情况我们需要进行右旋转，具体如下图。
+
+  <img src="https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312181736147.png" alt="image-20231218153925113" style="zoom:67%;float:left" />
+
+* 解决思路
+
+  * 首先，`g.left = p.right`。
+  * 然后，`p.right = g`。
+  * 最后，让节点 `p` 成为这颗子树的根节点。
+  * 当修改完成之后这仍然是一颗二叉搜索树：`T0 < n < T1 < p < T2 < g < T3`
+
+* 注意事项
+
+  * `T2、p、g` 的 `parent` 属性
+  * 更新 `g、p` 的高度
+
+  
+
+#### RR - 左旋转（单旋）
+
+* 现在需要在节点 `n` 的左子树或者右子树 `T2、T3` 中添加元素，则会导致节点 `g` 失衡。
+
+  <img src="https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312181747942.png" alt="image-20231218174705906" style="zoom:90%;float:left" />
+
+* 当节点 `g` 右边的右边节点失去平衡时，我们称这种情况为 `RR`。针对这种情况我们需要进行左旋转，具体如下图。
+
+  <img src="https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312181753090.png" alt="image-20231218175336042" style="zoom:80%;float:left" />
+
+* 解决思路
+
+  * 首先，`g.right= p.left`。
+  * 然后，`p.left= g`。
+  * 最后，让节点 `p` 成为这颗子树的根节点。
+  * 当修改完成之后这仍然是一颗二叉搜索树：`T0 < g < T1 < p < T2 < g < T3`
+
+* 注意事项
+
+  * `T3、p、g` 的 `parent` 属性
+  * 更新 `g、p` 的高度
+
+
+
+#### LR - RR 左旋转，LL右旋转（双旋）
+
+* 当节点 p 是 节点 g 的 left 节点，节点 n 是 节点 p 的 right 节点，现在往 节点 n 添加节点，这种情况称为 `LR`。
+
+  <img src="https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312181757757.png" alt="image-20231218175742727" style="zoom:100%;float:left" />
+
+* 如果是LR，我们先进行一次左旋转，将二叉树变为 `LL`
+
+  <img src="https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312181758004.png" alt="image-20231218175843975" style="zoom:100%;float:left" />
+
+* 然后再进行一次右旋转，即可使树达到平衡。
+
+  <img src="https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312181759185.png" alt="image-20231218175927159" style="zoom:100%;float:left" />
+
+
+
+#### `RL` - LL 右旋转，RR左旋转（双旋）
+
+
+
+
+
+### 删除导致的失衡
+
+
+
+
+
+
+
+### 删除导致的失衡的解决方案
+
+
+
+
+
+
+
+
+
+
+
 
 
