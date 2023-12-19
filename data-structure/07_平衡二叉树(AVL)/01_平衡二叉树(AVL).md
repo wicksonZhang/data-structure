@@ -171,13 +171,196 @@
 
 ### 接口设计
 
-#### 添加节点-afterAdd()
+#### 添加节点 - `afterAdd()`
 
-* 我们平衡二叉树是基于二叉搜索树进行开发，所以当我们的二叉搜索树添加完节点之后，如果当前二叉树失衡之后，我们需要恢复平衡。
+* 我们平衡二叉树是基于二叉搜索树进行开发，所以当我们的二叉搜索树添加完节点之后，如果当前二叉树失衡之后，我们需要恢复平衡。具体操作如下图
+
+  ![动画](https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312192140045.gif)
+
+* 实现的思路如下（我们的代码就是基于如下思路进行开发）
+
+  * 首先，我们基于 `BST` 进行开发，当我们新添加元素时需要保证 `AVL` 和 `BST` 互不影响。
+  * 其次，当 `AVL` 添加时需要判断当前树是否处于平衡状态。
+  * 然后，如果这棵树处于平衡状态我们则更新这颗树的高度。
+  * 最后，如果当前树不处于平衡状态时需要重新让这棵树处于平衡。
+
+* 我们基于 `BST` 进行开发，当我们新添加元素时需要保证 `AVL` 和 `BST` 互不影响。具体代码如下
+
+  * `BST.java`
+
+  ```java
+      /**
+       * 添加元素
+       *
+       * @param element 元素
+       */
+      public void add(E element) {
+          // 参数检查
+          checkedElementNotNull(element);
+  
+          // 如果当前的父级节点为 null ，则代表添加第一个元素
+          if (root == null) {
+              // TODO ...
+              // 新添加节点之后处理
+              afterAdd(root);
+              return;
+          }
+  
+          // 如果当前的父级节点不为 null ,我们将需要添加的元素添加在父级节点的那个位置
+          Node<E> newNode = createNode(element, parent);
+          // TODO ...
+          afterAdd(newNode);
+      }
+  
+      /**
+       * 添加节点之后进行调整
+       *
+       * @param node 节点信息
+       */
+      protected void afterAdd(Node<E> node) { }
+  ```
+
+  * 在 `AVL.java` 中重写 `afterAdd()` 
+
+  ```java
+      @Override
+      protected void afterAdd(Node<E> node) {
+          while ((node = node.parentNode) != null) {
+              // 判断整棵树是否平衡，如果平衡，则更新高度，如果不平衡，则恢复平衡
+              if (isBalanced(node)) {
+                  // 更新高度
+                  updateHeight(node);
+              } else {
+                  // 恢复平衡
+                  rebalanced(node);
+                  break;
+              }
+          }
+      }
+  ```
+
+* 当 `AVL` 添加时需要基于平衡因子判断当前树是否处于平衡状态，具体的思路就是判断左右子树的高度是否小于等于1
+
+  * 我们判断是否处于平衡，主要是在 `isBalanced(Node<E> node)` 中进行判断
+
+  ```java
+      /**
+       * 判断是否平衡
+       *
+       * @param node 节点
+       * @return boolean
+       */
+      private boolean isBalanced(Node<E> node) {
+          return Math.abs(((AVLNode<E>) node).balanceFactor()) <= 1;
+      }
+  ```
+
+  * 其中 `AVLNode<E>` 主要是针对我们平衡二叉树进行使用与 `BST` 无关
+
+  ```java
+      /**
+       * AVL 节点信息
+       *
+       * @param <E>
+       */
+      private static class AVLNode<E> extends Node<E> {
+          int height = 1;
+  
+          public AVLNode(E element, Node<E> parentNode) {
+              super(element, parentNode);
+          }
+  
+          /**
+           * 平衡因子
+           *
+           * @return int
+           */
+          public int balanceFactor() {
+              int leftHeight = leftNode == null ? 0 : ((AVLNode<E>) leftNode).height;
+              int rightHeight = rightNode == null ? 0 : ((AVLNode<E>) rightNode).height;
+              return leftHeight - rightHeight;
+          }
+  
+      }
+  ```
+
+* 如果这棵树处于平衡状态我们则更新这颗树的高度，具体的思路就是当前节点的父级节点的高度
+
+  * 我们更新高度主要在 `updateHeight(Node<E> node)` 中进行
+
+  ```java
+      /**
+       * 更新节点高度
+       *
+       * @param node 节点
+       */
+      private void updateHeight(Node<E> node) {
+          ((AVLNode<E>) node).updateHeight();
+      }
+  ```
+
+  * 其中 `AVLNode<E>` 进行封装即可，树的高度等于左右子树中的最大值 + 1
+
+  ```java
+      /**
+       * AVL 节点信息
+       *
+       * @param <E>
+       */
+      private static class AVLNode<E> extends Node<E> {
+          int height = 1;
+  
+          public AVLNode(E element, Node<E> parentNode) {
+              super(element, parentNode);
+          }
+          
+          // TODO ...
+  
+          /**
+           * 更新高度
+           */
+          public void updateHeight() {
+              int leftHeight = leftNode == null ? 0 : ((AVLNode<E>) leftNode).height;
+              int rightHeight = rightNode == null ? 0 : ((AVLNode<E>) rightNode).height;
+              height = 1 + Math.max(leftHeight, rightHeight);
+          }
+  
+      }
+  ```
+
+* 如果当前树处于不平衡状态时需要重新让这棵树处于平衡，具体的思路请看 《添加导致的失衡的解决方案》
+
+  * 如果当前树处于不平衡状态，主要是在 `rebalanced(Node<E> node)` 中进行判断
+
+  ```java
+      /**
+       * 重新恢复平衡
+       *
+       * @param grand 节点
+       */
+      private void rebalanced(Node<E> grand) {
+          Node<E> parent = ((AVLNode<E>) grand).tallerChild();
+          Node<E> node = ((AVLNode<E>) parent).tallerChild();
+          // parent 是 grand 的左子树
+          if (parent.isLeftChild()) { // L
+              if (node.isLeftChild()) { // LL
+                  rotateRight(grand);
+              } else { // LR
+                  rotateLeft(parent);
+                  rotateRight(grand);
+              }
+          } else { // R
+              if (node.isLeftChild()) { // RL
+                  rotateRight(parent);
+                  rotateLeft(grand);
+              } else { // RR
+                  rotateLeft(grand);
+              }
+          }
+      }
+  ```
 
   
-
-
 
 
 

@@ -55,9 +55,34 @@ public class AVL<E> extends BST<E> {
     /**
      * 重新恢复平衡
      *
-     * @param node 节点
+     * @param grand 节点
      */
-    private void rebalanced(Node<E> node) {
+    private void rebalanced(Node<E> grand) {
+        Node<E> parent = ((AVLNode<E>) grand).tallerChild();
+        Node<E> node = ((AVLNode<E>) parent).tallerChild();
+        // parent 是 grand 的左子树
+        if (parent.isLeftChild()) { // L
+            if (node.isLeftChild()) { // LL
+                rotateRight(grand);
+            } else { // LR
+                rotateLeft(parent);
+                rotateRight(grand);
+            }
+        } else { // R
+            if (node.isLeftChild()) { // RL
+                rotateRight(parent);
+                rotateLeft(grand);
+            } else { // RR
+                rotateLeft(grand);
+            }
+        }
+    }
+
+    private void rotateLeft(Node<E> node) {
+
+    }
+
+    private void rotateRight(Node<E> node) {
 
     }
 
@@ -99,13 +124,16 @@ public class AVL<E> extends BST<E> {
         }
 
         /**
+         * 高度比较高的子节点
          *
          * @return Node<E>
          */
         public Node<E> tallerChild() {
-            int leftHeight = leftNode == null ? 0 : ((AVLNode<E>)leftNode).height;
-            int rightHeight = rightNode == null ? 0 : ((AVLNode<E>)rightNode).height;
+            int leftHeight = leftNode == null ? 0 : ((AVLNode<E>) leftNode).height;
+            int rightHeight = rightNode == null ? 0 : ((AVLNode<E>) rightNode).height;
+            // 左子树高，就返回左子树
             if (leftHeight > rightHeight) return leftNode;
+            // 右子树高，就返回右子树
             if (leftHeight < rightHeight) return rightNode;
             return isLeftChild() ? leftNode : rightNode;
         }
