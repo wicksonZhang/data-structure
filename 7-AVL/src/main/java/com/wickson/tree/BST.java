@@ -68,8 +68,9 @@ public class BST<E> extends BinaryTree<E> {
     }
 
     /**
+     * 添加节点之后进行调整
      *
-     * @param node
+     * @param node 节点信息
      */
     protected void afterAdd(Node<E> node) {
 
