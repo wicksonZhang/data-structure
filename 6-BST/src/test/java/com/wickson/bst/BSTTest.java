@@ -9,12 +9,13 @@ import java.util.Comparator;
 /**
  * 二叉搜索树-单元测试
  */
-public class BinarySearchTreeTest {
-    private BinarySearchTree<Integer> bst;
+public class BSTTest {
+
+    private BST<Integer> bst;
 
     @BeforeEach
     public void setup() {
-        bst = new BinarySearchTree<>();
+        bst = new BST<>();
         bst.add(5);
         bst.add(3);
         bst.add(7);
@@ -76,7 +77,7 @@ public class BinarySearchTreeTest {
     @Test
     public void testCustomComparator() {
         // Comparator.reverseOrder()
-        BinarySearchTree<String> stringBST = new BinarySearchTree<>(Comparator.reverseOrder());
+        BST<String> stringBST = new BST<>(Comparator.reverseOrder());
         stringBST.add("apple");
         stringBST.add("banana");
         stringBST.add("cherry");

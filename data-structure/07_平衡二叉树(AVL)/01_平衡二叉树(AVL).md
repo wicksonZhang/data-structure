@@ -78,7 +78,7 @@
   * 首先，`g.left = p.right`。
   * 然后，`p.right = g`。
   * 最后，让节点 `p` 成为这颗子树的根节点。
-  * 当修改完成之后这仍然是一颗二叉搜索树：`T0 < n < T1 < p < T2 < g < T3`
+  * 当修改完成之后这仍然是一颗二叉搜索树：`T0 < n < T1 < p < T2 < g < T3`。
 
 * 注意事项
 
@@ -102,12 +102,12 @@
   * 首先，`g.right= p.left`。
   * 然后，`p.left= g`。
   * 最后，让节点 `p` 成为这颗子树的根节点。
-  * 当修改完成之后这仍然是一颗二叉搜索树：`T0 < g < T1 < p < T2 < g < T3`
+  * 当修改完成之后这仍然是一颗二叉搜索树：`T0 < g < T1 < p < T2 < g < T3`。
 
 * 注意事项
 
-  * `T3、p、g` 的 `parent` 属性
-  * 更新 `g、p` 的高度
+  * `T3、p、g` 的 `parent` 属性。
+  * 更新 `g、p` 的高度。
 
 
 
@@ -133,11 +133,11 @@
 
   <img src="https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312182031987.png" alt="image-20231218203110939" style="zoom:100%;float:left" />
 
-* 如果是 `RL`，我们先进行一次右旋转，将二叉树变为 `RR`
+* 如果是 `RL`，我们先进行一次右旋转，将二叉树变为 `RR`。
 
   <img src="https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312182032685.png" alt="image-20231218203234640" style="zoom:70%;float:left" />
 
-* 然后再进行左旋转，即可达到平衡
+* 然后再进行左旋转，即可达到平衡。
 
   <img src="https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312182033799.png" alt="image-20231218203315778" style="zoom:80%;float:left" />
 
@@ -154,6 +154,34 @@
 ### 删除导致的失衡的解决方案
 
 
+
+
+
+
+
+## 平衡二叉树
+
+### `UML` 类图
+
+* 平衡二叉树是在 二叉搜索树 基础上进行开发的，如下是 `UML` 类图。
+
+
+
+
+
+### 接口设计
+
+
+
+
+
+### 代码实现
+
+
+
+
+
+### 单元测试
 
 
 
