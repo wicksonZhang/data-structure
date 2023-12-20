@@ -39,6 +39,25 @@ public class AVL<E> extends BST<E> {
     }
 
     /**
+     * 删除之后做处理
+     *
+     * @param node 节点信息
+     */
+    @Override
+    protected void afterRemove(Node<E> node) {
+        while ((node = node.parentNode) != null) {
+            // 判断整棵树是否平衡，如果平衡，则更新高度，如果不平衡，则恢复平衡
+            if (isBalanced(node)) {
+                // 更新高度
+                updateHeight(node);
+            } else {
+                // 恢复平衡
+                rebalanced(node);
+            }
+        }
+    }
+
+    /**
      * 判断是否平衡
      *
      * @param node 节点
@@ -90,7 +109,10 @@ public class AVL<E> extends BST<E> {
      */
     private void rotateLeft(Node<E> grand) {
         Node<E> parent = grand.rightNode;
-
+        Node<E> child = parent.leftNode;
+        grand.rightNode = child;
+        parent.leftNode = grand;
+        afterRotate(grand, parent, child);
     }
 
     /**
@@ -99,7 +121,35 @@ public class AVL<E> extends BST<E> {
      * @param grand 节点
      */
     private void rotateRight(Node<E> grand) {
+        Node<E> parent = grand.rightNode;
+        Node<E> child = grand.leftNode;
+        grand.rightNode = child;
+        grand.leftNode = grand;
+        afterRotate(grand, parent, child);
+    }
 
+    private void afterRotate(Node<E> grand, Node<E> parent, Node<E> child) {
+        // 让 parent 成为子树的根节点
+        parent.parentNode = grand.parentNode;
+        if (grand.isLeftChild()) {
+            grand.parentNode.leftNode = parent;
+        } else if (grand.isLeftChild()) {
+            grand.parentNode.leftNode = parent;
+        } else {
+            root = parent;
+        }
+
+        // 更新 child 的parent
+        if (child != null) {
+            child.parentNode = grand;
+        }
+
+        // 更新 grand 的 parent
+        grand.parentNode = parent;
+
+        // 更新高度
+        updateHeight(grand);
+        updateHeight(parent);
     }
 
     @Override
@@ -112,7 +162,7 @@ public class AVL<E> extends BST<E> {
      *
      * @param <E>
      */
-    private static class AVLNode<E> extends Node<E> {
+    protected static class AVLNode<E> extends Node<E> {
         int height = 1;
 
         public AVLNode(E element, Node<E> parentNode) {

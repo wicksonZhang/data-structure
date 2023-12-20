@@ -131,10 +131,6 @@
 
   <img src="https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312181759185.png" alt="image-20231218175927159" style="zoom:100%;float:left" />
 
-* 解决思路
-  * 首先，进行左旋转 ，即 。
-  * 
-
 
 
 #### `RL` - LL 右旋转，RR左旋转（双旋）
@@ -155,17 +151,37 @@
 
 ### 删除导致的失衡
 
+* 例如，当我们需要删除如下二叉树中的节点（16）时，会导致父节点进行失衡。
 
-
-
+<img src="https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312202154660.png" alt="image-20231220215416628" style="zoom:100%;float:left" />
 
 
 
 ### 删除导致的失衡的解决方案
 
+* 删除导致的失衡和添加导致的失衡需要考虑的情况是差不多的
+
+#### LL - 右旋转（单旋）
+
+![image-20231220220613912](https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312202206951.png)
 
 
 
+#### RR - 左旋转（单旋）
+
+![image-20231220220643639](https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312202206679.png)
+
+
+
+#### LR - RR 左旋转，LL右旋转（双旋）
+
+![image-20231220220721720](https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312202207768.png)
+
+
+
+#### `RL` - LL 右旋转，RR左旋转（双旋）
+
+![image-20231220220748695](https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312202207747.png)
 
 
 
@@ -175,7 +191,7 @@
 
 * 平衡二叉树是在 **二叉搜索树** 基础上进行开发的，如下是 `UML` 类图。
 
-
+<img src="https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312202237012.png" alt="image-20231220223742969" style="zoom:100%;float:left" />
 
 
 
@@ -183,7 +199,7 @@
 
 * 我们平衡二叉树是基于二叉搜索树进行开发，所以当我们的二叉搜索树添加完节点之后，如果当前二叉树失衡之后，我们需要恢复平衡。具体操作如下图
 
-  ![动画](https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312192140045.gif)
+  ![动画](https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312202147315.gif)
 
 * 实现的思路如下（我们的代码就是基于如下思路进行开发）
 
@@ -375,13 +391,226 @@
           }
       }
   ```
+  
+  * 其中在 `AVLNode<E>` 中获取高度比较高的子节点
+  
+  ```java
+      /**
+       * AVL 节点信息
+       *
+       * @param <E>
+       */
+      private static class AVLNode<E> extends Node<E> {
+          int height = 1;
+  
+          public AVLNode(E element, Node<E> parentNode) {
+              super(element, parentNode);
+          }
+  
+          // TODO ...
+  
+          /**
+           * 高度比较高的子节点
+           *
+           * @return Node<E>
+           */
+          public Node<E> tallerChild() {
+              int leftHeight = leftNode == null ? 0 : ((AVLNode<E>) leftNode).height;
+              int rightHeight = rightNode == null ? 0 : ((AVLNode<E>) rightNode).height;
+              // 左子树高，就返回左子树
+              if (leftHeight > rightHeight) return leftNode;
+              // 右子树高，就返回右子树
+              if (leftHeight < rightHeight) return rightNode;
+              return isLeftChild() ? leftNode : rightNode;
+          }
+  
+      }
+  ```
+  
+  * 左旋和右旋的相关代码
+  
+  ```java
+      /**
+       * 左旋转
+       *
+       * @param grand 节点
+       */
+      private void rotateLeft(Node<E> grand) {
+          Node<E> parent = grand.rightNode;
+          Node<E> child = parent.leftNode;
+          grand.rightNode = child;
+          parent.leftNode = grand;
+          afterRotate(grand, parent, child);
+      }
+  
+      /**
+       * 右旋转
+       *
+       * @param grand 节点
+       */
+      private void rotateRight(Node<E> grand) {
+          Node<E> parent = grand.rightNode;
+          Node<E> child = grand.leftNode;
+          grand.rightNode = child;
+          grand.leftNode = grand;
+          afterRotate(grand, parent, child);
+      }
+  
+      private void afterRotate(Node<E> grand, Node<E> parent, Node<E> child) {
+          // 让 parent 成为子树的根节点
+          parent.parentNode = grand.parentNode;
+          if (grand.isLeftChild()) {
+              grand.parentNode.leftNode = parent;
+          } else if (grand.isLeftChild()) {
+              grand.parentNode.leftNode = parent;
+          } else {
+              root = parent;
+          }
+  
+          // 更新 child 的parent
+          if (child != null) {
+              child.parentNode = grand;
+          }
+  
+          // 更新 grand 的 parent
+          grand.parentNode = parent;
+  
+          // 更新高度
+          updateHeight(grand);
+          updateHeight(parent);
+      }
+  ```
+
+#### 删除节点 - `afterRemove()`
+
+* 我们基于 `BST` 进行开发，当我们新添加元素时需要保证 `AVL` 和 `BST` 互不影响。
+
+  * 我们需要在 `BST.java` 中修改 `remove()` ，如果是基于 `AVL` 那么则需要进行删除节点之后进行处理。
+
+  ```java
+      /**
+       * 删除元素
+       *
+       * @param node 节点
+       */
+      private void remove(Node<E> node) {
+          if (node == null) {
+              return;
+          }
+  
+          // 如果 node 是为删除度为1的节点
+          if (removeNode != null) {
+              // TODO ...
+              
+              // 删除之后的处理
+              afterRemove(node);
+          } else if (node.parentNode == null) { // 删除叶子节点, 且只有根节点元素
+              root = null;
+              // 删除之后的处理
+              afterRemove(node);
+          } else { // 删除叶子节点, 有可能当前节点在父级节点的左边，也有可能在父级节点的右边
+              // TODO ...
+              // 删除之后的处理
+              afterRemove(node);
+          }
+          size--;
+      }
+  ```
+
+  * 由于 `AVL.java`  继承了 `BST.java` 所以在 `BST` 中需要重写 `afterRemove()` 
+
+  ```java
+      /**
+       * 删除之后做处理
+       *
+       * @param node 节点信息
+       */
+      @Override
+      protected void afterRemove(Node<E> node) {
+          while ((node = node.parentNode) != null) {
+              // 判断整棵树是否平衡，如果平衡，则更新高度，如果不平衡，则恢复平衡
+              if (isBalanced(node)) {
+                  // 更新高度
+                  updateHeight(node);
+              } else {
+                  // 恢复平衡
+                  rebalanced(node);
+              }
+          }
+      }
+  ```
 
 
+
+### 总结
+
+* 添加
+  * 可能会导致所有的祖先节点都失衡
+  * 只要让高度最低的失衡节点恢复平衡，整棵树就会恢复平衡【仅需O(1)次调整】
+* 删除
+  * 可能会导致父节点或祖先节点失衡
+  * 恢复平衡后，可能会导致更高层的祖先节点失衡【最多需要O(logn)次调整】
+* 平均时间复杂度
+  * 搜素：O(logn)
+  * 添加：O(logn)，仅需O(1)次旋转
+  * 删除：O(logn)，最多需要O(logn)次旋转操作
 
 
 
 
 ### 单元测试
+
+```java
+public class AVLTest {
+
+    private AVL<Integer> avlTree;
+
+    @BeforeEach
+    void setUp() {
+        avlTree = new AVL<>();
+        // 添加一些元素作为测试数据
+        avlTree.add(5);
+        avlTree.add(3);
+        avlTree.add(7);
+        avlTree.add(2);
+        avlTree.add(4);
+        avlTree.add(6);
+        avlTree.add(8);
+    }
+
+    @Test
+    void testSizeAndClear() {
+        assertEquals(7, avlTree.size());
+        assertFalse(avlTree.isEmpty());
+
+        avlTree.clear();
+
+        assertEquals(0, avlTree.size());
+        assertTrue(avlTree.isEmpty());
+    }
+
+    @Test
+    void testBalanceAfterAdd() {
+        // 添加节点后，检查 AVL 树是否保持平衡
+        assertTrue(isBalanced(avlTree.root));
+    }
+
+    @Test
+    void testBalanceAfterRemove() {
+        // 在移除节点后，检查 AVL 树是否保持平衡
+        avlTree.remove(3);
+        assertTrue(isBalanced(avlTree.root));
+    }
+
+    private boolean isBalanced(BinaryTree.Node<Integer> node) {
+        if (node == null) {
+            return true;
+        }
+        int balanceFactor = ((AVL.AVLNode<Integer>) node).balanceFactor();
+        return Math.abs(balanceFactor) <= 1 && isBalanced(node.leftNode) && isBalanced(node.rightNode);
+    }
+}
+```
 
 
 

@@ -77,6 +77,15 @@ public class BST<E> extends BinaryTree<E> {
     }
 
     /**
+     * 删除节点之后进行调整
+     *
+     * @param node 节点信息
+     */
+    protected void afterRemove(Node<E> node) {
+
+    }
+
+    /**
      * 比较两个元素的大小
      * Comparator: java.util.Comparator
      * Comparable: java.lang.Comparable
@@ -147,14 +156,20 @@ public class BST<E> extends BinaryTree<E> {
             } else {
                 node.parentNode.rightNode = removeNode;
             }
+            // 删除之后的处理
+            afterRemove(node);
         } else if (node.parentNode == null) { // 删除叶子节点, 且只有根节点元素
             root = null;
+            // 删除之后的处理
+            afterRemove(node);
         } else { // 删除叶子节点, 有可能当前节点在父级节点的左边，也有可能在父级节点的右边
             if (node == node.parentNode.leftNode) {
                 node.parentNode.leftNode = null;
             } else {
                 node.parentNode.rightNode = null;
             }
+            // 删除之后的处理
+            afterRemove(node);
         }
         size--;
     }
@@ -189,6 +204,5 @@ public class BST<E> extends BinaryTree<E> {
         }
         return null;
     }
-
 
 }
