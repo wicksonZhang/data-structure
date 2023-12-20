@@ -105,7 +105,7 @@ public class BST<E> extends BinaryTree<E> {
     }
 
     /**
-     * 删除指定位置元素
+     * 删除指定元素
      *
      * @param element 元素
      */

@@ -51,13 +51,19 @@
 
 ### 添加导致的失衡
 
-* 如下图中，当添加 13 这个节点时，会导致所有的祖先节点进行失衡。
+* 如下图中，当添加 13 这个节点时，会导致祖先节点进行失衡。
 
   <img src="https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312181518602.png" alt="image-20231218151818560" style="zoom: 50%; float: left;" />
 
 
 
 ### 添加导致的失衡的解决方案
+
+* 目前添加导致的失衡存在如下四种情况
+  * LL - 右旋转（单旋）
+  * RR - 左旋转（单旋）
+  * LR - RR 左旋转，LL右旋转（双旋）
+  * `RL` - LL 右旋转，RR左旋转（双旋）
 
 #### LL - 右旋转（单旋）
 
@@ -73,10 +79,10 @@
 
   <img src="https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312181736147.png" alt="image-20231218153925113" style="zoom:67%;float:left" />
 
-* 解决思路
+* 解决思路（**右旋转**）
 
-  * 首先，`g.left = p.right`。
-  * 然后，`p.right = g`。
+  * 首先，我们将节点 `g` 的左子树指向节点 `p` 的右子树，即：`g.left = p.right`。
+  * 然后，再将节点 `p` 的右子树指向节点 `g` ，即：`p.right = g`。
   * 最后，让节点 `p` 成为这颗子树的根节点。
   * 当修改完成之后这仍然是一颗二叉搜索树：`T0 < n < T1 < p < T2 < g < T3`。
 
@@ -97,10 +103,10 @@
 
   <img src="https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312181753090.png" alt="image-20231218175336042" style="zoom:80%;float:left" />
 
-* 解决思路
+* 解决思路（**左旋转**）
 
-  * 首先，`g.right= p.left`。
-  * 然后，`p.left= g`。
+  * 首先，我们将节点 `g` 的右子树指向节点 `p` 的左子树，即：`g.right= p.left`。
+  * 然后，再将节点 `p` 的左子树指向节点 `g` ，即：`p.left= g`。
   * 最后，让节点 `p` 成为这颗子树的根节点。
   * 当修改完成之后这仍然是一颗二叉搜索树：`T0 < g < T1 < p < T2 < g < T3`。
 
@@ -113,17 +119,21 @@
 
 #### LR - RR 左旋转，LL右旋转（双旋）
 
-* 当节点 p 是 节点 g 的 left 节点，节点 n 是 节点 p 的 right 节点，现在往 节点 n 添加节点，这种情况称为 `LR`。
+* 当节点 `p` 是 节点 `g` 的 `left` 节点，节点 `n` 是 节点 `p` 的 `right` 节点，现在往节点 `n` 添加节点，这种情况称为 `LR`。
 
   <img src="https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312181757757.png" alt="image-20231218175742727" style="zoom:100%;float:left" />
 
-* 如果是LR，我们先进行一次左旋转，将二叉树变为 `LL`
+* 如果是 `LR`，我们先进行一次左旋转，将二叉树变为 `LL`。
 
   <img src="https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312181758004.png" alt="image-20231218175843975" style="zoom:100%;float:left" />
 
 * 然后再进行一次右旋转，即可使树达到平衡。
 
   <img src="https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202312181759185.png" alt="image-20231218175927159" style="zoom:100%;float:left" />
+
+* 解决思路
+  * 首先，进行左旋转 ，即 。
+  * 
 
 
 
@@ -169,9 +179,7 @@
 
 
 
-### 接口设计
-
-#### 添加节点 - `afterAdd()`
+### 代码实现
 
 * 我们平衡二叉树是基于二叉搜索树进行开发，所以当我们的二叉搜索树添加完节点之后，如果当前二叉树失衡之后，我们需要恢复平衡。具体操作如下图
 
@@ -184,9 +192,11 @@
   * 然后，如果这棵树处于平衡状态我们则更新这颗树的高度。
   * 最后，如果当前树不处于平衡状态时需要重新让这棵树处于平衡。
 
-* 我们基于 `BST` 进行开发，当我们新添加元素时需要保证 `AVL` 和 `BST` 互不影响。具体代码如下
+#### 添加节点 - `afterAdd()`
 
-  * `BST.java`
+* 我们基于 `BST` 进行开发，当我们新添加元素时需要保证 `AVL` 和 `BST` 互不影响。
+
+  * 我们需要在 `BST.java` 中修改 `add()` ，如果是基于 `AVL` 那么则需要进行添加节点之后进行处理。
 
   ```java
       /**
@@ -220,7 +230,7 @@
       protected void afterAdd(Node<E> node) { }
   ```
 
-  * 在 `AVL.java` 中重写 `afterAdd()` 
+  * 由于 `AVL.java`  继承了 `BST.java` 所以在 `BST` 中需要重写 `afterAdd()` 
 
   ```java
       @Override
@@ -238,6 +248,8 @@
           }
       }
   ```
+
+#### 是否平衡 - `isBalanced()`
 
 * 当 `AVL` 添加时需要基于平衡因子判断当前树是否处于平衡状态，具体的思路就是判断左右子树的高度是否小于等于1
 
@@ -284,6 +296,8 @@
       }
   ```
 
+#### 更新高度 - `updateHeight()`
+
 * 如果这棵树处于平衡状态我们则更新这颗树的高度，具体的思路就是当前节点的父级节点的高度
 
   * 我们更新高度主要在 `updateHeight(Node<E> node)` 中进行
@@ -299,7 +313,7 @@
       }
   ```
 
-  * 其中 `AVLNode<E>` 进行封装即可，树的高度等于左右子树中的最大值 + 1
+  * 其中更新高度的方法 `updateHeight()` 在 `AVLNode<E>` 中进行封装即可，树的高度等于左右子树中的最大值 + 1
 
   ```java
       /**
@@ -327,6 +341,8 @@
   
       }
   ```
+
+#### 恢复平衡 - `rebalanced()`
 
 * 如果当前树处于不平衡状态时需要重新让这棵树处于平衡，具体的思路请看 《添加导致的失衡的解决方案》
 
@@ -360,11 +376,6 @@
       }
   ```
 
-  
-
-
-
-### 代码实现
 
 
 

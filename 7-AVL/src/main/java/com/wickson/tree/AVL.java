@@ -18,6 +18,11 @@ public class AVL<E> extends BST<E> {
         super(comparator);
     }
 
+    /**
+     * 添加之后处理
+     *
+     * @param node 节点信息
+     */
     @Override
     protected void afterAdd(Node<E> node) {
         while ((node = node.parentNode) != null) {
@@ -78,11 +83,22 @@ public class AVL<E> extends BST<E> {
         }
     }
 
-    private void rotateLeft(Node<E> node) {
+    /**
+     * 左旋转
+     *
+     * @param grand 节点
+     */
+    private void rotateLeft(Node<E> grand) {
+        Node<E> parent = grand.rightNode;
 
     }
 
-    private void rotateRight(Node<E> node) {
+    /**
+     * 右旋转
+     *
+     * @param grand 节点
+     */
+    private void rotateRight(Node<E> grand) {
 
     }
 
