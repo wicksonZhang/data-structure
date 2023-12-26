@@ -16,6 +16,7 @@
         <module>4-Queue</module>
         <module>6-BST</module>
         <module>7-AVL</module>
+        <module>8-RedBlackTree</module>
     </modules>
 
     <properties>
