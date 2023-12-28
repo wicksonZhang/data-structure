@@ -310,6 +310,21 @@ public class BinaryTree<E> {
         public boolean isRightChild() {
             return parentNode != null && this == parentNode.rightNode;
         }
+
+        /**
+         * 兄弟节点
+         *
+         * @return Node<E>
+         */
+        public Node<E> sibling() {
+            if (isLeftChild()) {
+                return parentNode.rightNode;
+            }
+            if (isRightChild()) {
+                return parentNode.leftNode;
+            }
+            return null;
+        }
     }
 
 }
