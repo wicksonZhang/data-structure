@@ -8,7 +8,7 @@ import java.util.Comparator;
  * @author ZhangZiHeng
  * @date 2023-12-19
  */
-public class AVL<E> extends BST<E> {
+public class AVL<E> extends BBST<E> {
 
     public AVL() {
         this(null);
@@ -57,6 +57,14 @@ public class AVL<E> extends BST<E> {
         }
     }
 
+    @Override
+    protected void afterRotate(Node<E> grand, Node<E> parent, Node<E> child) {
+        super.afterRotate(grand, parent, child);
+        // 更新高度
+        updateHeight(grand);
+        updateHeight(parent);
+    }
+
     /**
      * 判断是否平衡
      *
@@ -102,55 +110,6 @@ public class AVL<E> extends BST<E> {
         }
     }
 
-    /**
-     * 左旋转
-     *
-     * @param grand 节点
-     */
-    private void rotateLeft(Node<E> grand) {
-        Node<E> parent = grand.rightNode;
-        Node<E> child = parent.leftNode;
-        grand.rightNode = child;
-        parent.leftNode = grand;
-        afterRotate(grand, parent, child);
-    }
-
-    /**
-     * 右旋转
-     *
-     * @param grand 节点
-     */
-    private void rotateRight(Node<E> grand) {
-        Node<E> parent = grand.rightNode;
-        Node<E> child = grand.leftNode;
-        grand.rightNode = child;
-        grand.leftNode = grand;
-        afterRotate(grand, parent, child);
-    }
-
-    private void afterRotate(Node<E> grand, Node<E> parent, Node<E> child) {
-        // 让 parent 成为子树的根节点
-        parent.parentNode = grand.parentNode;
-        if (grand.isLeftChild()) {
-            grand.parentNode.leftNode = parent;
-        } else if (grand.isLeftChild()) {
-            grand.parentNode.leftNode = parent;
-        } else {
-            root = parent;
-        }
-
-        // 更新 child 的parent
-        if (child != null) {
-            child.parentNode = grand;
-        }
-
-        // 更新 grand 的 parent
-        grand.parentNode = parent;
-
-        // 更新高度
-        updateHeight(grand);
-        updateHeight(parent);
-    }
 
     @Override
     protected Node<E> createNode(E element, Node<E> parent) {
