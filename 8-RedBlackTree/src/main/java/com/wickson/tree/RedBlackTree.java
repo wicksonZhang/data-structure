@@ -95,6 +95,11 @@ public class RedBlackTree<E> extends BBST<E> {
         }
     }
 
+    @Override
+    protected void afterRemove(Node<E> node) {
+        super.afterRemove(node);
+    }
+
     /**
      * 判断红黑树节点的颜色
      *
