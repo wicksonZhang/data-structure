@@ -81,7 +81,7 @@ public class BST<E> extends BinaryTree<E> {
      *
      * @param node 节点信息
      */
-    protected void afterRemove(Node<E> node) {
+    protected void afterRemove(Node<E> node, Node<E> replaceNode) {
 
     }
 
@@ -157,11 +157,11 @@ public class BST<E> extends BinaryTree<E> {
                 node.parentNode.rightNode = removeNode;
             }
             // 删除之后的处理
-            afterRemove(node);
+            afterRemove(node, removeNode);
         } else if (node.parentNode == null) { // 删除叶子节点, 且只有根节点元素
             root = null;
             // 删除之后的处理
-            afterRemove(node);
+            afterRemove(node, null);
         } else { // 删除叶子节点, 有可能当前节点在父级节点的左边，也有可能在父级节点的右边
             if (node == node.parentNode.leftNode) {
                 node.parentNode.leftNode = null;
@@ -169,7 +169,7 @@ public class BST<E> extends BinaryTree<E> {
                 node.parentNode.rightNode = null;
             }
             // 删除之后的处理
-            afterRemove(node);
+            afterRemove(node, null);
         }
         size--;
     }

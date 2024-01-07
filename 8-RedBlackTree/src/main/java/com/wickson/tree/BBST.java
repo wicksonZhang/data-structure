@@ -2,7 +2,7 @@ package com.wickson.tree;
 
 import java.util.Comparator;
 
-public class BBST<E> extends BST<E> {
+public abstract class BBST<E> extends BST<E> {
 
     public BBST() {
         this(null);
