@@ -108,7 +108,18 @@ public class RedBlackTree<E> extends BBST<E> {
             return;
         }
 
-        /* Step-2：叶子节点 Black 节点 */
+        // 删除的节点是根节点
+        Node<E> parentNode = node.parentNode;
+        if (parentNode == null) {
+            return;
+        }
+
+        /* Step-3：叶子节点 Black 节点 */
+        boolean leftNode = parentNode.leftNode == null;
+        Node<E> siblingNode = leftNode ? parentNode.rightNode : parentNode.leftNode;
+        // 删除的 Black 叶子节点 sibling 为 Black
+
+        // 删除的 Black 叶子节点 sibling 为 Red
 
     }
 
