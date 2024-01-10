@@ -96,30 +96,85 @@ public class RedBlackTree<E> extends BBST<E> {
     }
 
     @Override
-    protected void afterRemove(Node<E> node, Node<E> replaceNode) {
+    protected void afterRemove(Node<E> node) {
         /* Step-1：如果叶子节点为红色，不用处理 */
-        if (isRed(node)) {
-            return;
-        }
+//        if (isRed(node)) return;
 
         /* Step-2：1 个 Red 子节点的 Black 节点 */
-        if (isRed(replaceNode)) {
-            black(replaceNode);
+        if (isRed(node)) {
+            black(node);
             return;
         }
 
         // 删除的节点是根节点
         Node<E> parentNode = node.parentNode;
-        if (parentNode == null) {
-            return;
-        }
+        if (parentNode == null) { return; }
 
         /* Step-3：叶子节点 Black 节点 */
-        boolean leftNode = parentNode.leftNode == null;
+        // leftNode == null =》 leftNode 就是被删除的节点
+        boolean leftNode = parentNode.leftNode == null || node.isLeftChild();
         Node<E> siblingNode = leftNode ? parentNode.rightNode : parentNode.leftNode;
-        // 删除的 Black 叶子节点 sibling 为 Black
+        if (leftNode) { // 被删除的节点在左边，兄弟节点在右边
+            // 兄弟节点是红色
+            if (isRed(siblingNode)) {
+                black(siblingNode);
+                red(parentNode);
+                rotateLeft(parentNode);
+                // 更换兄弟节点
+                siblingNode = parentNode.rightNode;
+            }
+            // 兄弟节点必然是黑色
+            if (isBlack(siblingNode.leftNode) && isRed(siblingNode.rightNode)) {
+                // 兄弟节点没有 1 个红色子节点，父节点要向下跟兄弟节点合并
+                boolean parentBlack = isBlack(parentNode);
+                black(parentNode);
+                red(siblingNode);
+                if (parentBlack) {
+                    afterRemove(parentNode);
+                }
+            } else {
+                // 兄弟节点至少有 1 个红色子节点，向兄弟节点借元素
+                if (isBlack(siblingNode.rightNode)) {
+                    rotateRight(siblingNode);
+                    siblingNode = parentNode.rightNode;
+                }
 
-        // 删除的 Black 叶子节点 sibling 为 Red
+                color(siblingNode, colorOf(parentNode));
+                black(siblingNode.rightNode);
+                black(parentNode);
+                rotateLeft(parentNode);
+            }
+        } else { // 被删除的节点在右边，兄弟节点在左边
+            // 兄弟节点是红色
+            if (isRed(siblingNode)) {
+                black(siblingNode);
+                red(parentNode);
+                rotateRight(parentNode);
+                // 更换兄弟节点
+                siblingNode = parentNode.leftNode;
+            }
+            // 兄弟节点必然是黑色
+            if (isBlack(siblingNode.leftNode) && isRed(siblingNode.rightNode)) {
+                // 兄弟节点没有 1 个红色子节点，父节点要向下跟兄弟节点合并
+                boolean parentBlack = isBlack(parentNode);
+                black(parentNode);
+                red(siblingNode);
+                if (parentBlack) {
+                    afterRemove(parentNode);
+                }
+            } else {
+                // 兄弟节点至少有 1 个红色子节点，向兄弟节点借元素
+                if (isBlack(siblingNode.leftNode)) {
+                    rotateLeft(siblingNode);
+                    siblingNode = parentNode.leftNode;
+                }
+
+                color(siblingNode, colorOf(parentNode));
+                black(siblingNode.leftNode);
+                black(parentNode);
+                rotateRight(parentNode);
+            }
+        }
 
     }
 

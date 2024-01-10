@@ -44,7 +44,7 @@ public class AVL<E> extends BBST<E> {
      * @param node 节点信息
      */
     @Override
-    protected void afterRemove(Node<E> node, Node<E> replaceNode) {
+    protected void afterRemove(Node<E> node) {
         while ((node = node.parentNode) != null) {
             // 判断整棵树是否平衡，如果平衡，则更新高度，如果不平衡，则恢复平衡
             if (isBalanced(node)) {
