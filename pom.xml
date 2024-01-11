@@ -17,6 +17,7 @@
         <module>6-BST</module>
         <module>7-AVL</module>
         <module>8-RedBlackTree</module>
+        <module>9-Set</module>
     </modules>
 
     <properties>
