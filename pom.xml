@@ -18,6 +18,7 @@
         <module>7-AVL</module>
         <module>8-RedBlackTree</module>
         <module>9-Set</module>
+        <module>10-Map</module>
     </modules>
 
     <properties>
