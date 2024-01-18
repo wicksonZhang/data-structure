@@ -1,4 +1,4 @@
-package com.wickson.set;
+package com.wickson.map;
 
 import com.wickson.file.FileInfo;
 import com.wickson.file.Files;
@@ -10,15 +10,9 @@ import org.junit.jupiter.api.Test;
  */
 public class ComparisonTest {
 
-
     @Test
-    public void ListSetTest() {
-        Times.test("ListSet", () -> common(new ListSet<>(), file()));
-    }
-
-    @Test
-    public void treeSetTest() {
-        Times.test("TreeSet", () -> common(new TreeSet<>(), file()));
+    public void treeMapTest() {
+        Times.test("treeMapTest", () -> common(new TreeMap<>(), file()));
     }
 
     public String[] file() {
@@ -32,18 +26,28 @@ public class ComparisonTest {
         return words;
     }
 
-    public void common(Set<String> set, String[] words) {
+    public void common(TreeMap<String, Integer> treeMap, String[] words) {
         // 添加
         for (String word : words) {
-            set.add(word);
+            Integer count = treeMap.get(word);
+            Integer totalCount = count == null ? 1 : count + 1;
+            treeMap.put(word, totalCount);
         }
+        // 创建 Visitor 接口的实现类，用于测试遍历
+        treeMap.traversal(new Map.Visitor<String, Integer>() {
+            @Override
+            public boolean visit(String key, Integer value) {
+                System.out.println("key = " + key + ", " + "value = " + value);
+                return false;
+            }
+        });
         // 查询
         for (String word : words) {
-            set.contains(word);
+            treeMap.containKey(word);
         }
         // 删除
         for (String word : words) {
-            set.remove(word);
+            treeMap.remove(word);
         }
     }
 

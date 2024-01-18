@@ -289,10 +289,10 @@ public class TreeMap<K, V> implements Map<K, V> {
      * @param grand 节点
      */
     private void rotateRight(Node<K, V> grand) {
-        Node<K, V> parent = grand.rightNode;
-        Node<K, V> child = grand.leftNode;
-        grand.rightNode = child;
-        grand.leftNode = grand;
+        Node<K, V> parent = grand.leftNode;
+        Node<K, V> child = parent.rightNode;
+        grand.leftNode = child;
+        parent.rightNode = grand;
         afterRotate(grand, parent, child);
     }
 
