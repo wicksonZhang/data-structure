@@ -449,10 +449,10 @@
        * @param grand 节点
        */
       private void rotateRight(Node<E> grand) {
-          Node<E> parent = grand.rightNode;
-          Node<E> child = grand.leftNode;
-          grand.rightNode = child;
-          grand.leftNode = grand;
+          Node<E> parent = grand.leftNode;
+          Node<E> child = parent.rightNode;
+          grand.leftNode = child;
+          parent.rightNode = grand;
           afterRotate(grand, parent, child);
       }
   
