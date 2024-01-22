@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.wickson</groupId>
-    <artifactId>3-Stack</artifactId>
+    <artifactId>07-AVL</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

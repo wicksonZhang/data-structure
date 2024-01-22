@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.wickson</groupId>
-    <artifactId>8-RedBlackTree</artifactId>
+    <artifactId>06-BST</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

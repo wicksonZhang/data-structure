@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.wickson</groupId>
-    <artifactId>2-LinkedList</artifactId>
+    <artifactId>02-LinkedList</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
