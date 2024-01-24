@@ -19,6 +19,7 @@
         <module>08-RedBlackTree</module>
         <module>09-Set</module>
         <module>10-Map</module>
+        <module>11-Hash</module>
     </modules>
 
     <properties>
