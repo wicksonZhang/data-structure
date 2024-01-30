@@ -20,6 +20,7 @@
         <module>09-Set</module>
         <module>10-Map</module>
         <module>11-Hash</module>
+        <module>12-BinaryHeap</module>
     </modules>
 
     <properties>
