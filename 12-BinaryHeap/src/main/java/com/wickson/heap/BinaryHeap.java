@@ -69,11 +69,61 @@ public class BinaryHeap<E> implements Heap<E> {
     /**
      * 添加元素
      *
-     * @param e 元素
+     * @param element 元素
      */
     @Override
-    public void add(E e) {
+    public void add(E element) {
+        elementCheck(element);
+        // 扩容
+        ensureCapacity(size + 1);
+        elements[size++] = element;
+        // 上滤
+        siftUp(size - 1);
+    }
 
+    /**
+     * 扩容
+     *
+     * @param capacity 容量
+     */
+    private void ensureCapacity(int capacity) {
+        if (capacity - elements.length > 0) {
+            int newCapacity = capacity + (capacity >> 1);
+            E[] newElement = (E[]) new Object[newCapacity];
+            for (int i = 0; i < size; i++) {
+                newElement[i] = elements[i];
+            }
+            elements = newElement;
+        }
+    }
+
+    /**
+     * 上滤
+     *
+     * @param index 索引
+     */
+    private void siftUp(int index) {
+        // 获取到需要上滤的元素
+        E element = elements[index];
+        while (index > 0) {
+            // 获取父级元素
+            int parentIndex = index - 1 >> 2;
+            E parentElement = elements[parentIndex];
+            // 比较元素
+            if (compare(parentElement, element) >= 0) {
+                break;
+            }
+            // 这里和之前思路有点不同，我们直接找到需要替换元素的索引，直接将我们需要的值替换
+            elements[index] = parentElement;
+            index = parentIndex;
+        }
+        elements[index] = element;
+    }
+
+    private void elementCheck(E e) {
+        if (e == null) {
+            throw new NullPointerException("Element is not null");
+        }
     }
 
     /**
@@ -93,9 +143,30 @@ public class BinaryHeap<E> implements Heap<E> {
         }
     }
 
+    /**
+     * 删除元素
+     *
+     * @return E
+     */
     @Override
     public E remove() {
-        return null;
+        emptyCheck();
+
+        int lastIndex = --size;
+        E root = elements[0];
+        elements[0] = elements[lastIndex];
+        elements[lastIndex] = null;
+        siftDown(0);
+        return root;
+    }
+
+    /**
+     * 下滤
+     *
+     * @param i
+     */
+    private void siftDown(int i) {
+
     }
 
     @Override
