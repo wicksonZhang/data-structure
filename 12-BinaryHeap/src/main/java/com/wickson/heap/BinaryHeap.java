@@ -1,5 +1,7 @@
 package com.wickson.heap;
 
+import com.wickson.printer.BinaryTreeInfo;
+
 import java.util.Comparator;
 
 /**
@@ -8,7 +10,7 @@ import java.util.Comparator;
  * @param <E>
  */
 @SuppressWarnings("unchecked")
-public class BinaryHeap<E> implements Heap<E> {
+public class BinaryHeap<E> implements Heap<E>, BinaryTreeInfo {
 
     // 数组元素
     private E[] elements;
@@ -151,11 +153,11 @@ public class BinaryHeap<E> implements Heap<E> {
     @Override
     public E remove() {
         emptyCheck();
-
         int lastIndex = --size;
         E root = elements[0];
         elements[0] = elements[lastIndex];
         elements[lastIndex] = null;
+
         siftDown(0);
         return root;
     }
@@ -163,14 +165,67 @@ public class BinaryHeap<E> implements Heap<E> {
     /**
      * 下滤
      *
-     * @param i
+     * @param index
      */
-    private void siftDown(int i) {
+    private void siftDown(int index) {
+        E element = elements[index];
+        int half = size >> 1;
+        // 第一个叶子节点的索引 == 非叶子节点的数量
+        // index < 第一个叶子节点的索引
+        // 必须保证index位置是非叶子节点
+        while (index < half) {
+            // index的节点有2种情况
+            // 1.只有左子节点
+            // 2.同时有左右子节点
 
+            // 默认为左子节点跟它进行比较
+            int childIndex = (index << 1) + 1;
+            E child = elements[childIndex];
+
+            // 右子节点
+            int rightIndex = childIndex + 1;
+
+            // 选出左右子节点最大的那个
+            if (rightIndex < size && compare(elements[rightIndex], child) > 0) {
+                child = elements[childIndex = rightIndex];
+            }
+
+            if (compare(element, child) >= 0) break;
+
+            // 将子节点存放到index位置
+            elements[index] = child;
+            // 重新设置index
+            index = childIndex;
+        }
+        elements[index] = element;
     }
+
 
     @Override
     public E replace(E e) {
         return null;
     }
+
+    @Override
+    public Object root() {
+        return 0;
+    }
+
+    @Override
+    public Object left(Object node) {
+        int index = ((int) node << 1) + 1;
+        return index >= size ? null : index;
+    }
+
+    @Override
+    public Object right(Object node) {
+        int index = ((int) node << 1) + 2;
+        return index >= size ? null : index;
+    }
+
+    @Override
+    public Object string(Object node) {
+        return elements[(int) node];
+    }
 }
+
