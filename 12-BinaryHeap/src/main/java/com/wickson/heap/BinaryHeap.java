@@ -201,9 +201,25 @@ public class BinaryHeap<E> implements Heap<E>, BinaryTreeInfo {
     }
 
 
+    /**
+     * 删除堆顶元素同时插入一个新的元素
+     *
+     * @param element
+     * @return
+     */
     @Override
-    public E replace(E e) {
-        return null;
+    public E replace(E element) {
+        elementCheck(element);
+        E root = null;
+        if (size == 0) {
+            elements[0] = element;
+            size++;
+        } else {
+            root = elements[0];
+            elements[0] = element;
+            siftDown(0);
+        }
+        return root;
     }
 
     @Override

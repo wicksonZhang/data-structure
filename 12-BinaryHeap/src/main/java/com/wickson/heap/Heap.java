@@ -25,7 +25,7 @@ public interface Heap<E> {
     // 删除堆顶元素
     E remove();
 
-    // 替换元素
+    // 删除堆顶元素同时插入一个新的元素
     E replace(E e);
 
 }
