@@ -1,118 +1,8 @@
-# 二叉堆
-
-> 本章节代码：
-
-## 基础知识
-
-### 二叉堆解决了什么问题
-
-二叉堆解决的主要问题是在一个动态集合中找到最大或最小元素，并且支持快速的插入和删除操作。
-
-* 找到最大或最小元素的时间复杂度：O(1)
-* 删除和插入的时间复杂度：O(logn)
+package com.wickson.heap;
 
 
+import java.util.Comparator;
 
-### 二叉堆是什么
-
-**二叉堆（Binary Heap）：**二叉堆是一种特殊的二叉树数据结构，二叉堆的核心概念如下：
-
-* **堆（heap）：**任意节点 i 的值总是 **大于等于（>=） 或者 小于等于（<=） 子节点** 的值。
-* **最大堆（Max Heap）：** 对于任意节点 i 的值如果 **大于等于（>=） 子节点** 的值。
-* **最小堆（Min Heap）：**对于任意节点 i 的值如果 **小于等于（<=）子节点** 的值。
-
-![image-20240131214432923](https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202401312144073.png)
-
-
-
-### 二叉堆的性质
-
-二叉堆的本质上是一颗完全二叉树，所以二叉堆的索引 i 具备以下性质：
-
-* **注意，以下的 i 代表的是索引，n 代表的是元素数量**。
-* 如果 **i = 0**，它是根节点。例如，节点 72.
-* 如果 **i > 0**，它的父节点的索引为 **floor((i - 1) / 2)**。例如，节点 43、38 的父节点都是 68。 **floor((3 - 1) / 2) = 1**
-* 如果 **2i + 1 <= n - 1**，它的左子节点的索引为 **2i + 1**。例如，节点 68 的左子节点 43。**2 * 1 + 1 = 3**
-* 如果 **2i + 1 > n - 1**，它无左子节点。例如，节点 47 无左子节点。**2 * 5 + 1 > 10 -1**
-* 如果 **2i + 2 <= n - 1**，它的右子节点的索引为 **2i + 2**。例如，节点 68 的右子节点就是 38。**2 * 1 + 2 = 4**
-* 如果 **2i + 2 > n - 1**，它无右子节点。例如，节点47。**2 * 5 + 2 > 10 - 1**
-
-<img src="https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202401312153351.png" alt="image-20240131215306300" style="zoom:80%;float:left" />
-
-
-
-### 二叉堆优缺点
-
-**优点**
-
-* **高效的插入和删除操作：** 二叉堆对于插入和删除操作的时间复杂度都是 O(log n)，其中 n 是堆中元素的数量。
-* **高效的查找最大值或最小值：**如果是最大堆或者是最小堆，根节点就是最大值或者最小值，时间复杂度为O(1)。
-
-**缺点**
-
-* **不支持动态大小：**因为二叉堆一般底层可以采用数组实现，所以是不具备动态扩容的。
-
-
-
-## 二叉堆的实现
-
-### `UML` 类图
-
-
-
-
-
-### 接口设计
-
-* 如下是堆 **Heap** 的接口设计
-
-```java
-/**
- * 堆
- *
- * @param <E>
- */
-public interface Heap<E> {
-
-    // 元素的数量
-    int size();
-
-    // 是否为空
-    boolean isEmpty();
-
-    // 清空元素
-    void clear();
-
-    // 添加元素
-    void add(E e);
-
-    // 获取堆顶元素
-    E get();
-
-    // 删除堆顶元素
-    E remove();
-
-    // 替换元素
-    E replace(E e);
-
-}
-```
-
-
-
-### 代码实现
-
-```
-1. 初始化元素
-2. 元素的数量
-3. 是否为空
-```
-
-
-
-#### 初始化元素
-
-```java
 /**
  * 二叉堆
  *
@@ -131,7 +21,7 @@ public class BinaryHeap<E> implements Heap<E> {
     private static final int DEFAULT_CAPACITY = 1 << 4;
 
     // 二叉堆是具有可比较性的
-    private Comparator<E> comparator;
+    private final Comparator<E> comparator;
 
     public BinaryHeap() {
         this(null);
@@ -156,46 +46,27 @@ public class BinaryHeap<E> implements Heap<E> {
         return ((Comparable<E>) element1).compareTo(element2);
     }
 
-}
-```
-
-
-
-#### 获取堆顶元素
-
-```java
     @Override
-    public E get() {
-        emptyCheck();
-        return elements[0];
+    public int size() {
+        return size;
     }
 
-    private void emptyCheck() {
+    @Override
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    @Override
+    public void clear() {
         if (size == 0) {
-            throw new IndexOutOfBoundsException("Heap is empty");
+            return;
         }
+        for (int i = 0; i < size; i++) {
+            elements[i] = null;
+        }
+        size = 0;
     }
-```
 
-
-
-#### 添加元素
-
-**实现思路**
-
-```tex
-1. Step-1: 我们需要将元素添加在数组的最后一个元素。
-2. Step-2: 我们通过判断添加的元素是否比父节点大，如果比父节点大就交换位置。
-3. Step-3: 一致持续这个操作，最后如果没有父级节点就推出循环。
-```
-
-![image-20240201201527954](https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202402012015100.png)
-
-
-
-**实现代码**
-
-```java
     /**
      * 添加元素
      *
@@ -255,30 +126,24 @@ public class BinaryHeap<E> implements Heap<E> {
             throw new NullPointerException("Element is not null");
         }
     }
-```
 
+    /**
+     * 获取堆顶元素
+     *
+     * @return E
+     */
+    @Override
+    public E get() {
+        emptyCheck();
+        return elements[0];
+    }
 
+    private void emptyCheck() {
+        if (size == 0) {
+            throw new IndexOutOfBoundsException("Heap is empty");
+        }
+    }
 
-#### 删除
-
-**实现思路**
-
-* 这个不能使用常规思维进行解决，如果直接删除堆顶元素。那么所有的元素需要向前移动，时间复杂度又变为了 O(n) 。
-
-```tex
-1. Step-1: 将堆顶元素与数组最后一个元素进行交换位置，然后将最后一个元素删除。
-2. Step-2: 再将新的堆顶元素与子节点进行比较。
-3. Step-3: 如果比子节点小，则将最大子节点的元素进行交换。
-4. Step-4: 如果比子节点大，或者没有子节点，则退出循环。
-```
-
-![image-20240201211657259](https://cdn.jsdelivr.net/gh/wicksonZhang/static-source-cdn/images/202402012116357.png)
-
-
-
-**实现代码**
-
-```java
     /**
      * 删除元素
      *
@@ -333,11 +198,8 @@ public class BinaryHeap<E> implements Heap<E> {
         }
         elements[index] = element;
     }
-```
 
-#### 删除堆顶元素同时插入一个新的元素
 
-```java
     /**
      * 删除堆顶元素同时插入一个新的元素
      *
@@ -358,5 +220,6 @@ public class BinaryHeap<E> implements Heap<E> {
         }
         return root;
     }
-```
+
+}
 

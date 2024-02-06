@@ -21,6 +21,7 @@
         <module>10-Map</module>
         <module>11-Hash</module>
         <module>12-BinaryHeap</module>
+        <module>13-PriorityQueue</module>
     </modules>
 
     <properties>
