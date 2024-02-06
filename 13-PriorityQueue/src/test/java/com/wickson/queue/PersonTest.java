@@ -21,5 +21,4 @@ public class PersonTest {
             System.out.println(queue.deQueue());
         }
     }
-
 }
