@@ -22,6 +22,7 @@
         <module>11-Hash</module>
         <module>12-BinaryHeap</module>
         <module>13-PriorityQueue</module>
+        <module>14-Trie</module>
     </modules>
 
     <properties>
